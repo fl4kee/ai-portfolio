@@ -1,6 +1,8 @@
+"use client";
+
 import { Section } from "./Section";
 import { Reveal } from "./Reveal";
-import { skills } from "@/lib/content";
+import { useLang } from "@/lib/i18n";
 
 const marquee = [
   "Python",
@@ -25,14 +27,16 @@ const marquee = [
 ];
 
 export function Stack() {
+  const { t } = useLang();
+  const skills = t.skills;
   return (
     <Section
       id="stack"
-      eyebrow="Toolbox"
+      eyebrow={t.ui.stackEyebrow}
       title={
         <>
-          The stack I reach for{" "}
-          <span className="text-white/40">to ship fast and safe.</span>
+          {t.ui.stackTitleLead}{" "}
+          <span className="text-white/40">{t.ui.stackTitleMuted}</span>
         </>
       }
     >

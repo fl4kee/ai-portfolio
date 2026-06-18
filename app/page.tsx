@@ -6,6 +6,7 @@ import { Journey } from "@/components/Journey";
 import { Stack } from "@/components/Stack";
 import { Work } from "@/components/Work";
 import { Contact } from "@/components/Contact";
+import { DigitalTwin } from "@/components/DigitalTwin";
 
 export default function Home() {
   return (
@@ -20,6 +21,7 @@ export default function Home() {
         <Work />
         <Contact />
       </main>
+      <DigitalTwin />
     </>
   );
 }

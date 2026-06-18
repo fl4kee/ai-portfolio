@@ -46,8 +46,37 @@ public/
 
 ## Editing content
 
-Everything (bio, roles, achievements, skills, projects, contacts) lives in
-[`lib/content.ts`](lib/content.ts). No need to touch components for copy changes.
+Everything (bio, roles, achievements, skills, projects, contacts, UI labels) lives
+in [`lib/content.ts`](lib/content.ts) as a bilingual dictionary `content.en` /
+`content.ru`. No need to touch components for copy changes.
+
+## AI Digital Twin (chat)
+
+A floating chat that answers as Kirill, grounded in the career data in `lib/content.ts`.
+
+- **Server proxy:** [`app/api/chat/route.ts`](app/api/chat/route.ts) — streams from
+  OpenRouter (model `openai/gpt-oss-120b:free`). The API key stays server-side and
+  is **never** sent to the browser.
+- **Widget:** [`components/DigitalTwin.tsx`](components/DigitalTwin.tsx) — reads the
+  streamed tokens and renders them live.
+- Replies in the same language as the question (RU/EN).
+- Requires `OPENROUTER_API_KEY` in `.env` (gitignored). Example:
+
+  ```
+  OPENROUTER_API_KEY=sk-or-...
+  ```
+
+- Guards: history capped to the last 12 messages, 2000 chars/message, 700 max output tokens.
+- For production, set `HTTP-Referer` in the route to your real domain.
+
+## Languages (RU / EN)
+
+The site is fully bilingual with a toggle in the navbar.
+
+- State + persistence live in [`lib/i18n.tsx`](lib/i18n.tsx) (React context).
+- Choice is saved to `localStorage`; first-time visitors are auto-detected from
+  the browser language (`ru*` → Russian, otherwise English).
+- To change the default, edit the initial `useState` in `LanguageProvider`.
 
 ## Notes
 

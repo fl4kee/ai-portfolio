@@ -2,22 +2,24 @@
 
 import { useState } from "react";
 import { Section } from "./Section";
-import { journey } from "@/lib/content";
+import { useLang } from "@/lib/i18n";
 
 export function Journey() {
+  const { t } = useLang();
+  const journey = t.journey;
   const [open, setOpen] = useState(0);
 
   return (
     <Section
       id="journey"
-      eyebrow="Career journey"
+      eyebrow={t.ui.journeyEyebrow}
       title={
         <>
-          Four years, three teams,{" "}
-          <span className="text-white/40">one throughline.</span>
+          {t.ui.journeyTitleLead}{" "}
+          <span className="text-white/40">{t.ui.journeyTitleMuted}</span>
         </>
       }
-      intro="From telecom tooling to fintech scoring to a B2B platform at the core of the Astra Linux ecosystem — each step deeper into ownership and systems that matter."
+      intro={t.ui.journeyIntro}
     >
       <div className="relative">
         {/* timeline rail */}
@@ -55,7 +57,7 @@ export function Journey() {
                         </h3>
                         {i === 0 && (
                           <span className="rounded-full border border-emerald-400/30 bg-emerald-400/10 px-2 py-0.5 font-mono text-[10px] uppercase tracking-wider text-emerald-300">
-                            Now
+                            {t.ui.now}
                           </span>
                         )}
                       </div>
@@ -106,7 +108,7 @@ export function Journey() {
                   </div>
 
                   <p className="mt-4 font-mono text-[11px] text-white/35">
-                    {isOpen ? "− collapse" : "+ expand achievements"}
+                    {isOpen ? t.ui.collapse : t.ui.expand}
                   </p>
                 </button>
               </div>

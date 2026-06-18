@@ -1,7 +1,7 @@
 "use client";
 
 import { motion, useReducedMotion } from "framer-motion";
-import { profile } from "@/lib/content";
+import { useLang } from "@/lib/i18n";
 
 const STATIC = process.env.NEXT_PUBLIC_STATIC === "1";
 
@@ -15,6 +15,7 @@ const fadeUp = {
 };
 
 export function Hero() {
+  const { t: profile } = useLang();
   const reduce = useReducedMotion();
   const noAnim = STATIC || reduce;
   const startHidden = noAnim ? false : "hidden";
@@ -89,13 +90,13 @@ export function Hero() {
                 href="#contact"
                 className="group relative overflow-hidden rounded-xl bg-white px-6 py-3 text-sm font-semibold text-ink-950 transition-transform hover:scale-[1.02]"
               >
-                <span className="relative z-10">Let&apos;s talk</span>
+                <span className="relative z-10">{profile.ui.heroLetsTalk}</span>
               </a>
               <a
                 href="#journey"
                 className="rounded-xl border border-white/12 bg-white/[0.03] px-6 py-3 text-sm font-semibold text-white/90 transition-colors hover:border-white/30 hover:bg-white/[0.06]"
               >
-                View journey
+                {profile.ui.heroViewJourney}
               </a>
               <a
                 href={profile.resumeUrl}
@@ -103,7 +104,7 @@ export function Hero() {
                 rel="noreferrer"
                 className="rounded-xl px-4 py-3 font-mono text-sm text-white/55 transition-colors hover:text-white"
               >
-                résumé ↗
+                {profile.ui.heroResume} ↗
               </a>
             </motion.div>
 

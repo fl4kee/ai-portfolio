@@ -1,43 +1,39 @@
+"use client";
+
 import { Section } from "./Section";
 import { Reveal } from "./Reveal";
-import { profile, stats, education } from "@/lib/content";
+import { useLang } from "@/lib/i18n";
 
 export function About() {
+  const { t } = useLang();
+
   return (
     <Section
       id="about"
-      eyebrow="About"
+      eyebrow={t.ui.aboutEyebrow}
       title={
         <>
-          Engineering that ships,{" "}
-          <span className="text-white/40">end to end.</span>
+          {t.ui.aboutTitleLead}{" "}
+          <span className="text-white/40">{t.ui.aboutTitleMuted}</span>
         </>
       }
     >
       <div className="grid grid-cols-1 gap-8 lg:grid-cols-[1.4fr_1fr]">
         <Reveal>
           <div className="glass rounded-2xl p-8">
-            <p className="text-lg leading-relaxed text-white/75">
-              {profile.intro}
-            </p>
-            <p className="mt-5 leading-relaxed text-white/55">
-              I care about the unglamorous parts that make software trustworthy:
-              static typing, tests that don&apos;t flake, observable systems and
-              clean integrations. I&apos;ve owned features from requirements
-              analysis through release — and increasingly use LLMs and n8n to
-              automate the work that shouldn&apos;t need a human.
-            </p>
+            <p className="text-lg leading-relaxed text-white/75">{t.intro}</p>
+            <p className="mt-5 leading-relaxed text-white/55">{t.introExtra}</p>
 
             <div className="mt-8 flex items-center gap-4 border-t border-white/10 pt-6">
               <div className="grid h-11 w-11 shrink-0 place-items-center rounded-lg border border-white/10 bg-white/[0.03] font-mono text-xs text-accent">
-                EDU
+                {t.ui.aboutEduLabel}
               </div>
               <div>
                 <p className="text-sm font-medium text-white/85">
-                  {education.school}
+                  {t.education.school}
                 </p>
                 <p className="font-mono text-xs text-white/45">
-                  {education.degree} · {education.city} · {education.year}
+                  {t.education.degree} · {t.education.city} · {t.education.year}
                 </p>
               </div>
             </div>
@@ -46,7 +42,7 @@ export function About() {
 
         <Reveal delay={0.1}>
           <div className="grid h-full grid-cols-2 gap-4">
-            {stats.map((s) => (
+            {t.stats.map((s) => (
               <div
                 key={s.label}
                 className="glass card-hover flex flex-col justify-between rounded-2xl p-6"
