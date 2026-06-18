@@ -1,0 +1,22 @@
+# env / секреты (ключ OpenRouter — никогда в git)
+.env
+.env.*
+!.env.example
+
+# зависимости / сборка
+node_modules/
+dist/
+build/
+.next/
+__pycache__/
+
+# IDE / OS
+.idea/
+.vscode/
+.DS_Store
+
+# Claude Code локальное
+.claude/settings.local.json
+
+# личные инструкции Claude — не в публичный репо
+CLAUDE.md
