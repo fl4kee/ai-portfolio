@@ -98,7 +98,7 @@ export async function POST(req: Request) {
       headers: {
         Authorization: `Bearer ${apiKey}`,
         "Content-Type": "application/json",
-        "HTTP-Referer": "http://localhost:3000",
+        "HTTP-Referer": process.env.SITE_URL || "http://localhost:3000",
         "X-Title": "Kirill Lebedev Portfolio Digital Twin",
       },
       body: JSON.stringify({

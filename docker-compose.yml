@@ -1,0 +1,16 @@
+services:
+  web:
+    build: .
+    image: ai-portfolio
+    container_name: ai-portfolio
+    restart: unless-stopped
+    # Read OPENROUTER_API_KEY (and any overrides) from .env on the server.
+    env_file:
+      - .env
+    environment:
+      NODE_ENV: production
+      # Used as the OpenRouter HTTP-Referer. Change to your real domain.
+      SITE_URL: https://example.com
+    # Bind to localhost only — Nginx terminates TLS and proxies to it.
+    ports:
+      - "127.0.0.1:3000:3000"
