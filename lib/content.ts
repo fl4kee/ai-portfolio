@@ -90,6 +90,7 @@ export type Site = {
       greeting: string;
       starters: string[];
       error: string;
+      rateLimit: string;
       disclaimer: string;
     };
   };
@@ -190,6 +191,7 @@ export const content: Record<Lang, Site> = {
           "Why should we hire you?",
         ],
         error: "Something went wrong. Please try again.",
+        rateLimit: "Too many messages — give it a minute and try again.",
         disclaimer: "AI-generated · may be imprecise",
       },
     },
@@ -358,6 +360,7 @@ export const content: Record<Lang, Site> = {
           "Почему стоит тебя нанять?",
         ],
         error: "Что-то пошло не так. Попробуйте ещё раз.",
+        rateLimit: "Слишком много сообщений — подождите минуту и попробуйте снова.",
         disclaimer: "Сгенерировано AI · возможны неточности",
       },
     },

@@ -50,17 +50,58 @@ function buildSystemPrompt(): string {
   ].join("\n");
 }
 
-function json(data: unknown, status: number) {
+function json(data: unknown, status: number, headers?: Record<string, string>) {
   return new Response(JSON.stringify(data), {
     status,
-    headers: { "Content-Type": "application/json" },
+    headers: { "Content-Type": "application/json", ...headers },
   });
+}
+
+// --- Simple in-memory rate limiter (per IP, sliding window) ---
+// Bounds abuse of the free model. Per-instance only; resets on restart.
+const RATE_WINDOW_MS = 60_000;
+const RATE_MAX = 15;
+const hits = new Map<string, number[]>();
+
+function clientIp(req: Request): string {
+  const xff = req.headers.get("x-forwarded-for");
+  if (xff) return xff.split(",")[0].trim();
+  return req.headers.get("x-real-ip") || "unknown";
+}
+
+function rateLimit(ip: string): { ok: boolean; retryAfter: number } {
+  const now = Date.now();
+
+  // Occasional sweep to keep the map bounded.
+  if (hits.size > 5000) {
+    hits.forEach((v, k) => {
+      const recent = v.filter((t) => now - t < RATE_WINDOW_MS);
+      if (recent.length === 0) hits.delete(k);
+      else hits.set(k, recent);
+    });
+  }
+
+  const recent = (hits.get(ip) ?? []).filter((t) => now - t < RATE_WINDOW_MS);
+  if (recent.length >= RATE_MAX) {
+    hits.set(ip, recent);
+    return { ok: false, retryAfter: Math.ceil((RATE_WINDOW_MS - (now - recent[0])) / 1000) };
+  }
+  recent.push(now);
+  hits.set(ip, recent);
+  return { ok: true, retryAfter: 0 };
 }
 
 export async function POST(req: Request) {
   const apiKey = process.env.OPENROUTER_API_KEY;
   if (!apiKey) {
     return json({ error: "Server is not configured (missing API key)." }, 500);
+  }
+
+  const limit = rateLimit(clientIp(req));
+  if (!limit.ok) {
+    return json({ error: "Rate limit exceeded." }, 429, {
+      "Retry-After": String(limit.retryAfter),
+    });
   }
 
   let body: unknown;

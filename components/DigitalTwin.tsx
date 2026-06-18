@@ -44,6 +44,7 @@ export function DigitalTwin() {
         body: JSON.stringify({ messages: history }),
       });
 
+      if (res.status === 429) throw new Error("rate-limit");
       if (!res.ok || !res.body) throw new Error("request failed");
 
       const reader = res.body.getReader();
@@ -63,8 +64,8 @@ export function DigitalTwin() {
       }
 
       if (!acc.trim()) throw new Error("empty response");
-    } catch {
-      setError(chat.error);
+    } catch (err) {
+      setError(err instanceof Error && err.message === "rate-limit" ? chat.rateLimit : chat.error);
       // drop the empty assistant bubble
       setMessages((prev) =>
         prev.length && prev[prev.length - 1].role === "assistant" && !prev[prev.length - 1].content
